@@ -52,9 +52,7 @@ func convert(s string) int {
 
 	switch s {	
 	case "one":
-		return 1
-	case "oneight":
-		return 8
+		return 1	
 	case "two":
 		return 2
 	case "three":
