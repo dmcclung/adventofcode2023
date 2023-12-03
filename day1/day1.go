@@ -20,7 +20,7 @@ func main() {
 
 	var sum int
 	for scanner.Scan() {
-		line := scanner.Text()		
+		line := scanner.Text()
 
 		numbers := re.FindAllString(line, -1)
 
@@ -50,9 +50,9 @@ func convert(s string) int {
 		return digit
 	}
 
-	switch s {	
+	switch s {
 	case "one":
-		return 1	
+		return 1
 	case "two":
 		return 2
 	case "three":
