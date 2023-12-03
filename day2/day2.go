@@ -19,7 +19,7 @@ func main() {
 	re := regexp.MustCompile(`^Game (\d+):`)
 
 	scanner := bufio.NewScanner(file)
-	var sum int
+	var sum, powerSum int
 	for scanner.Scan() {
 		game := scanner.Text()
 		matches := re.FindStringSubmatch(game)
@@ -29,16 +29,43 @@ func main() {
 		actionStr := re.ReplaceAllString(game, "")
 		actionParts := strings.Split(actionStr, ";")
 
-		valid := parseGame(actionParts)
+		power := parseGameMins(actionParts)
+		powerSum += power
+
+		valid := parseGameValid(actionParts)
 		if valid {
 			sum += gameNumber
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Printf("Power %d, Valid sum %d\n", powerSum, sum)
 }
 
-func parseGame(actionParts []string) bool {
+func parseGameMins(actionParts []string) int {
+	var minBlue, minRed, minGreen int
+
+	for _, p := range actionParts {
+		parts := strings.Split(strings.TrimSpace(p), ",")
+
+		for _, part := range parts {
+			var number int
+			var color string
+			fmt.Sscanf(part, "%d %s", &number, &color)
+
+			if color == "red" && number > minRed {
+				minRed = number
+			} else if color == "green" && number > minGreen {
+				minGreen = number
+			} else if color == "blue" && number > minBlue {
+				minBlue = number
+			}
+		}
+	}
+
+	return minBlue * minRed * minGreen
+}
+
+func parseGameValid(actionParts []string) bool {
 	for _, p := range actionParts {
 		parts := strings.Split(strings.TrimSpace(p), ",")
 
